@@ -4,10 +4,16 @@ using UnityEngine;
 
 public class Entity : MonoBehaviour
 {
+    public enum Direction
+    {
+        left,
+        right
+    }
 
-    public float flyingMod;          
-    //private bool isDead = false;            
-    public bool direction;
+    public float flyingMod;
+    public float speedMod;
+    private bool dead;            
+    public Direction direction;
     public string button;
 
     //private Animator anim;                 
@@ -17,27 +23,25 @@ public class Entity : MonoBehaviour
     {
         //anim = GetComponent<Animator>();
         body = GetComponent<Rigidbody2D>();
-        //body.centerOfMass = new Vector2(0.1F, 0F);
-        //body.inertia = 1F;
-        if(!direction)
+        if(direction == Direction.left)
             gameObject.transform.Rotate(new Vector3(0, 180, 0));
     }
 
     void Update()
     {
+        if (dead) return;
         if (Input.GetKeyDown(button))
         {
             Debug.Log("Pressed");
-            //anim.SetTrigger("Flap");
+            //anim.SetTrigger("Somethingtomakeitmove");
             body.velocity = Vector2.zero;               
             body.angularVelocity = 0;
-            body.rotation = 0F;
-       
+            body.rotation = 0F;       
 
-            if(direction)
-                body.AddForce(new Vector2(200, flyingMod));
+            if(direction == Direction.right)
+                body.AddForce(new Vector2(speedMod, flyingMod));
             else
-                body.AddForce(new Vector2(-200, flyingMod));
+                body.AddForce(new Vector2(-speedMod, flyingMod));
 
             body.AddTorque(5F);
         }
@@ -47,31 +51,22 @@ public class Entity : MonoBehaviour
     {
         if(collision.gameObject.tag == "SideWall")
         {
-            //body.velocity.Scale(new Vector2(-100, 100));
-            direction = !direction;
+            if (direction == Direction.right) direction = Direction.left;
+            else direction = Direction.right;
             gameObject.transform.Rotate(new Vector3(0, 180, 0));
         }
 
-        /*if(other.otherCollider.GetType() == typeof(BoxCollider2D) && other.collider.GetType() != typeof(BoxCollider2D) && other.otherCollider.gameObject.tag == "Entity")
+        if(collision.otherCollider.GetType() != typeof(BoxCollider2D) && collision.collider.GetType() == typeof(BoxCollider2D))
         {
-
-        }*/
-
-        if(collision.otherCollider.GetType() != typeof(BoxCollider2D))
-        {
-            //isDead = true;
             Debug.Log("Dead");
-            gameObject.SetActive(false);
+            body.velocity = Vector2.zero;
+            dead = true;
+            //anim.SetTrigger("DieAnimation");
+            //gameObject.SetActive(false);
         }
         else
         {
             Debug.Log("Blocked");
         }
-
-        /*body.velocity = Vector2.zero;
-        isDead = true;
-        //anim.SetTrigger("Die");
-        //GameControl.instance.BirdDied();
-        gameObject.SetActive(false);*/
     }
 }
