@@ -21,11 +21,14 @@ public class Entity : MonoBehaviour
 
     void Start()
     {
+		Time.timeScale = 0;
         //anim = GetComponent<Animator>();
         body = GetComponent<Rigidbody2D>();
         if(direction == Direction.left)
             gameObject.transform.Rotate(new Vector3(0, 180, 0));
+		
     }
+	
 
     void Update()
     {
