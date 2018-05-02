@@ -15,6 +15,9 @@ public class Entity : MonoBehaviour
     private bool dead;            
     public Direction direction;
     public string button;
+    public string name;
+    public int player;
+    public gameScript script;
 
     //private Animator anim;                 
     private Rigidbody2D body;
@@ -66,10 +69,15 @@ public class Entity : MonoBehaviour
             dead = true;
             //anim.SetTrigger("DieAnimation");
             //gameObject.SetActive(false);
+            script.Victory(player);
         }
         else
         {
             Debug.Log("Blocked");
+            //if(collision.collider.tag=="Entity")
+            //{
+                //script.Victory(false, player);
+            //}
         }
     }
 }
