@@ -12,29 +12,30 @@ public class Entity : MonoBehaviour
 
     public float flyingMod;
     public float speedMod;
+
     private bool dead;            
     public Direction direction;
     public string button;
+    public string button2;
     public int player;
 
+    private Rigidbody2D body;
+    public GameObject fire;
     private Animator anim;
+    private AudioSource source;
+
     public AudioClip jumpSound;
     public AudioClip hitSound;
     public AudioClip deadSound;
-    private AudioSource source;                 
-    private Rigidbody2D body;
 
-    private bool detectedCollision;
+    private bool firePlaced;
 
     void Start()
     {
 		//Time.timeScale = 0;
         anim = GetComponent<Animator>();
         source = GetComponent<AudioSource>();
-        body = GetComponent<Rigidbody2D>();
-        //delete?//if(direction == Direction.left)
-        //delete?//    gameObject.transform.Rotate(new Vector3(0, 180, 0));
-		
+        body = GetComponent<Rigidbody2D>();	
     }
 	
 
@@ -44,9 +45,6 @@ public class Entity : MonoBehaviour
         if (dead) return;
         if (Input.GetKeyDown(button))
         {
-            if(detectedCollision) {
-            detectedCollision = false;
-            }
             Debug.Log("Pressed");
             source.PlayOneShot(jumpSound, 1F);
             anim.SetInteger("State",1);
@@ -55,25 +53,39 @@ public class Entity : MonoBehaviour
             body.angularVelocity = 0;
             body.rotation = 0F;       
 
-            if(direction == Direction.right)
+            if(direction == Direction.right){
                 body.AddForce(new Vector2(speedMod, flyingMod));
-            else
+                body.AddTorque(5F);
+            }
+            else{
                 body.AddForce(new Vector2(-speedMod, flyingMod));
-
-            body.AddTorque(5F);
+                body.AddTorque(-5F);
+            }
+            
+        }
+        if (Input.GetKeyDown(button2) && !firePlaced) {
+            Vector3 vector;
+            if(direction == Direction.right){
+                vector = new Vector3(transform.position.x - 1.1F, transform.position.y);
+            }
+            else{
+                vector = new Vector3(transform.position.x + 1.1F, transform.position.y);
+            }
+            var f = Instantiate(fire, vector, Quaternion.identity);
+            firePlaced = true;
         }
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
         
-        if((collision.gameObject.tag == "SideWall") && !detectedCollision)
+        if(collision.gameObject.tag == "SideWall")
         {
-            source.PlayOneShot(hitSound, 1F);
+            if (!dead) {source.PlayOneShot(hitSound, 1F);}
             if (direction == Direction.right) direction = Direction.left;
             else direction = Direction.right;
             gameObject.transform.Rotate(new Vector3(0, 180, 0));
-            detectedCollision = true;
+            firePlaced = false;
         }
 
         if(collision.gameObject.tag == "Danger")
@@ -84,8 +96,8 @@ public class Entity : MonoBehaviour
             dead = true;
             anim.SetInteger("State",2);
             
-            GameManager.trigger = player;
-            GameManager.Victory();
+            //GameManager.trigger = player;
+            //GameManager.Victory();
         }
         else
         {
