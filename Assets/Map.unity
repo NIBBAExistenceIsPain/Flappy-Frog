@@ -664,6 +664,7 @@ MonoBehaviour:
   jumpSound: {fileID: 8300000, guid: a7039d85a98b824469d0fe7f7e56f2fc, type: 3}
   hitSound: {fileID: 8300000, guid: b9d0f9ce9483a884eb81a7bcfb703c51, type: 3}
   deadSound: {fileID: 8300000, guid: 2ff0b4726fd3b63478dba64ccc050c8b, type: 3}
+  fireSound: {fileID: 8300000, guid: 8bcbab4d46743a04fad54d686e0d5991, type: 3}
 --- !u!61 &548614057
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1035,6 +1036,7 @@ MonoBehaviour:
   jumpSound: {fileID: 8300000, guid: a7039d85a98b824469d0fe7f7e56f2fc, type: 3}
   hitSound: {fileID: 8300000, guid: b9d0f9ce9483a884eb81a7bcfb703c51, type: 3}
   deadSound: {fileID: 8300000, guid: 2ff0b4726fd3b63478dba64ccc050c8b, type: 3}
+  fireSound: {fileID: 8300000, guid: 8bcbab4d46743a04fad54d686e0d5991, type: 3}
 --- !u!95 &692617970
 Animator:
   serializedVersion: 3

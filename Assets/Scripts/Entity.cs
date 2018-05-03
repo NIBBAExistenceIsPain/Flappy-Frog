@@ -29,12 +29,12 @@ public class Entity : MonoBehaviour
     public AudioClip jumpSound;
     public AudioClip hitSound;
     public AudioClip deadSound;
+    public AudioClip fireSound;
 
     private bool firePlaced;
 
     void Start()
     {
-		//Time.timeScale = 0;
         anim = GetComponent<Animator>();
         source = GetComponent<AudioSource>();
         body = GetComponent<Rigidbody2D>();
@@ -42,11 +42,7 @@ public class Entity : MonoBehaviour
         if(player==Player.one)
         gameObject.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = GameManager.player1;
         else
-        gameObject.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = GameManager.player2;
-       
-        //delete?//if(direction == Direction.left)
-        //delete?//    gameObject.transform.Rotate(new Vector3(0, 180, 0));
-		
+        gameObject.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = GameManager.player2;	
     }
 
     IEnumerator Faster()
@@ -91,6 +87,7 @@ public class Entity : MonoBehaviour
                 vector = new Vector3(transform.position.x + 1.1F, transform.position.y);
             }
             var f = Instantiate(fire, vector, Quaternion.identity);
+            source.PlayOneShot(fireSound, 1F);
             firePlaced = true;
         }
     }
