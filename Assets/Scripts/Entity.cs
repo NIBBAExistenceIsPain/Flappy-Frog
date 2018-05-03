@@ -15,16 +15,14 @@ public class Entity : MonoBehaviour
     private bool dead;            
     public Direction direction;
     public string button;
-    public string name;
     public int player;
-    public gameScript script;
 
     //private Animator anim;                 
     private Rigidbody2D body;
 
     void Start()
     {
-		Time.timeScale = 0;
+		//Time.timeScale = 0;
         //anim = GetComponent<Animator>();
         body = GetComponent<Rigidbody2D>();
         if(direction == Direction.left)
@@ -64,16 +62,17 @@ public class Entity : MonoBehaviour
 
         if(collision.otherCollider.GetType() != typeof(BoxCollider2D) && collision.collider.GetType() == typeof(BoxCollider2D))
         {
-            Debug.Log("Dead");
+            //Debug.Log("Dead");
             body.velocity = Vector2.zero;
             dead = true;
             //anim.SetTrigger("DieAnimation");
             //gameObject.SetActive(false);
-            script.Victory(player);
+            GameManager.trigger = player;
+            GameManager.Victory();
         }
         else
         {
-            Debug.Log("Blocked");
+            //Debug.Log("Blocked");
             //if(collision.collider.tag=="Entity")
             //{
                 //script.Victory(false, player);
