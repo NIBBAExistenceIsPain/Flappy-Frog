@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Entity : MonoBehaviour
 {
@@ -17,7 +18,8 @@ public class Entity : MonoBehaviour
     public Direction direction;
     public string button;
     public string button2;
-    public int player;
+    public Player player;
+ 
 
     private Rigidbody2D body;
     public GameObject fire;
@@ -35,9 +37,26 @@ public class Entity : MonoBehaviour
 		//Time.timeScale = 0;
         anim = GetComponent<Animator>();
         source = GetComponent<AudioSource>();
-        body = GetComponent<Rigidbody2D>();	
+        body = GetComponent<Rigidbody2D>();
+        StartCoroutine(Faster());
+        if(player==Player.one)
+        gameObject.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = GameManager.player1;
+        else
+        gameObject.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = GameManager.player2;
+       
+        //delete?//if(direction == Direction.left)
+        //delete?//    gameObject.transform.Rotate(new Vector3(0, 180, 0));
+		
     }
-	
+
+    IEnumerator Faster()
+    {
+        for(; ; )
+        {
+            yield return new WaitForSeconds(10);
+            speedMod = speedMod * 1.2f;
+        }
+    }
 
     void Update()
     {
@@ -75,6 +94,8 @@ public class Entity : MonoBehaviour
             firePlaced = true;
         }
     }
+
+   
 
     void OnCollisionEnter2D(Collision2D collision)
     {
