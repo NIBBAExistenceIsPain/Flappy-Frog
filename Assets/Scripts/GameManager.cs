@@ -4,13 +4,18 @@ using System.Collections;
 using System.Collections.Generic;      
 using UnityEngine.SceneManagement;
 
+public enum Player
+{
+    one,
+    two
+}
+
 public class GameManager : MonoBehaviour
 {
-
     public static GameManager instance = null;
     public static string player1;
     public static string player2;
-    public static int trigger;
+    public static Player trigger;
 
     void Awake()
     {
