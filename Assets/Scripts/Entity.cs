@@ -15,31 +15,44 @@ public class Entity : MonoBehaviour
     private bool dead;            
     public Direction direction;
     public string button;
-    public string name;
+    //WTF IS THIS FOR, IT GIVES AN ERROR//public string name;
     public int player;
     public gameScript script;
 
-    //private Animator anim;                 
+    private Animator anim;
+    public AudioClip jumpSound;
+    public AudioClip hitSound;
+    public AudioClip deadSound;
+    private AudioSource source;                 
     private Rigidbody2D body;
+
+    private bool detectedCollision;
 
     void Start()
     {
 		Time.timeScale = 0;
-        //anim = GetComponent<Animator>();
+        anim = GetComponent<Animator>();
+        source = GetComponent<AudioSource>();
         body = GetComponent<Rigidbody2D>();
-        if(direction == Direction.left)
-            gameObject.transform.Rotate(new Vector3(0, 180, 0));
+        //delete?//if(direction == Direction.left)
+        //delete?//    gameObject.transform.Rotate(new Vector3(0, 180, 0));
 		
     }
 	
 
     void Update()
     {
+        
         if (dead) return;
         if (Input.GetKeyDown(button))
         {
+            if(detectedCollision) {
+            detectedCollision = false;
+            }
             Debug.Log("Pressed");
-            //anim.SetTrigger("Somethingtomakeitmove");
+            source.PlayOneShot(jumpSound, 1F);
+            anim.SetInteger("State",1);
+            anim.Play("Jump", -1, 0f);
             body.velocity = Vector2.zero;               
             body.angularVelocity = 0;
             body.rotation = 0F;       
@@ -55,20 +68,27 @@ public class Entity : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.tag == "SideWall")
+        
+        if((collision.gameObject.tag == "SideWall") && !detectedCollision)
         {
+            source.PlayOneShot(hitSound, 1F);
             if (direction == Direction.right) direction = Direction.left;
             else direction = Direction.right;
             gameObject.transform.Rotate(new Vector3(0, 180, 0));
+            detectedCollision = true;
         }
 
-        if(collision.otherCollider.GetType() != typeof(BoxCollider2D) && collision.collider.GetType() == typeof(BoxCollider2D))
+        if(collision.gameObject.tag == "Danger")
         {
             Debug.Log("Dead");
             body.velocity = Vector2.zero;
+            if (!dead) {source.PlayOneShot(deadSound, 1F);}
             dead = true;
-            //anim.SetTrigger("DieAnimation");
-            //gameObject.SetActive(false);
+            anim.SetInteger("State",2);
+            
+            
+            //delete?//gameObject.SetActive(false);
+
             script.Victory(player);
         }
         else

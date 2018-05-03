@@ -6,6 +6,7 @@ TagManager:
   tags:
   - SideWall
   - Entity
+  - Danger
   layers:
   - Default
   - TransparentFX

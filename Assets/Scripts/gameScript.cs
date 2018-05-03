@@ -59,7 +59,7 @@ public class gameScript : MonoBehaviour {
 
     public void Replay()
     {
-        Application.LoadLevel(0);
+        //Application.LoadLevel(0);
     }
 
     public void Exit()
