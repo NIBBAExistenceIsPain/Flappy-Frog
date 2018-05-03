@@ -15,9 +15,7 @@ public class Entity : MonoBehaviour
     private bool dead;            
     public Direction direction;
     public string button;
-    //WTF IS THIS FOR, IT GIVES AN ERROR//public string name;
     public int player;
-    public gameScript script;
 
     private Animator anim;
     public AudioClip jumpSound;
@@ -30,7 +28,7 @@ public class Entity : MonoBehaviour
 
     void Start()
     {
-		Time.timeScale = 0;
+		//Time.timeScale = 0;
         anim = GetComponent<Animator>();
         source = GetComponent<AudioSource>();
         body = GetComponent<Rigidbody2D>();
@@ -80,20 +78,18 @@ public class Entity : MonoBehaviour
 
         if(collision.gameObject.tag == "Danger")
         {
-            Debug.Log("Dead");
+            //Debug.Log("Dead");
             body.velocity = Vector2.zero;
             if (!dead) {source.PlayOneShot(deadSound, 1F);}
             dead = true;
             anim.SetInteger("State",2);
             
-            
-            //delete?//gameObject.SetActive(false);
-
-            script.Victory(player);
+            GameManager.trigger = player;
+            GameManager.Victory();
         }
         else
         {
-            Debug.Log("Blocked");
+            //Debug.Log("Blocked");
             //if(collision.collider.tag=="Entity")
             //{
                 //script.Victory(false, player);
