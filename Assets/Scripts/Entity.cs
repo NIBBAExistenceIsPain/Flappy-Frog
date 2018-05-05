@@ -14,11 +14,12 @@ public class Entity : MonoBehaviour
     public float flyingMod;
     public float speedMod;
 
-    private bool dead;            
+    private bool dead;
     public Direction direction;
     public string button;
     public string button2;
     public Player player;
+    private Text charge;
  
 
     private Rigidbody2D body;
@@ -42,7 +43,10 @@ public class Entity : MonoBehaviour
         if(player==Player.one)
         gameObject.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = GameManager.player1;
         else
-        gameObject.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = GameManager.player2;	
+        gameObject.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = GameManager.player2;
+
+        charge = gameObject.transform.GetChild(0).GetChild(1).GetComponent<Text>();
+        charge.text = "X";
     }
 
     IEnumerator Faster()
@@ -60,7 +64,6 @@ public class Entity : MonoBehaviour
         if (dead) return;
         if (Input.GetKeyDown(button))
         {
-            Debug.Log("Pressed");
             source.PlayOneShot(jumpSound, 1F);
             anim.SetInteger("State",1);
             anim.Play("Jump", -1, 0f);
@@ -81,14 +84,15 @@ public class Entity : MonoBehaviour
         if (Input.GetKeyDown(button2) && !firePlaced) {
             Vector3 vector;
             if(direction == Direction.right){
-                vector = new Vector3(transform.position.x - 1.1F, transform.position.y);
+                vector = new Vector3(transform.position.x - 1.1F, transform.position.y, -1);
             }
             else{
-                vector = new Vector3(transform.position.x + 1.1F, transform.position.y);
+                vector = new Vector3(transform.position.x + 1.1F, transform.position.y, -1);
             }
             var f = Instantiate(fire, vector, Quaternion.identity);
             source.PlayOneShot(fireSound, 1F);
             firePlaced = true;
+            charge.text = "";
         }
     }
 
@@ -104,26 +108,16 @@ public class Entity : MonoBehaviour
             else direction = Direction.right;
             gameObject.transform.Rotate(new Vector3(0, 180, 0));
             firePlaced = false;
+            charge.text = "X";
         }
 
         if(collision.gameObject.tag == "Danger")
         {
-            //Debug.Log("Dead");
             body.velocity = Vector2.zero;
             if (!dead) {source.PlayOneShot(deadSound, 1F);}
             dead = true;
             anim.SetInteger("State",2);
-            
-            //GameManager.trigger = player;
-            //GameManager.Victory();
-        }
-        else
-        {
-            //Debug.Log("Blocked");
-            //if(collision.collider.tag=="Entity")
-            //{
-                //script.Victory(false, player);
-            //}
+            GameManager.Victory(player);
         }
     }
 }

@@ -28,18 +28,15 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
 
         DontDestroyOnLoad(gameObject);
-
     }
 
-    void Update()
+    private void Start()
     {
-
-
+        MainMenu();
     }
 
     public static void Play()
     {
-        Debug.Log("playing");
         SceneManager.LoadScene(1);
     }
 
@@ -48,8 +45,9 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(0);
     }
 
-    public static void Victory()
+    public static void Victory(Player dead)
     {
+        trigger = dead;
         SceneManager.LoadScene(2);
     }
 

@@ -7,14 +7,10 @@ public class VictoryScreen : MonoBehaviour {
 
 	void Start () {
         if (GameManager.trigger == Player.one)
-            gameObject.transform.GetChild(3).GetComponent<Text>().text = GameManager.player1;
+            transform.GetChild(1).GetComponent<Text>().text = GameManager.player2;
         else
-            gameObject.transform.GetChild(3).GetComponent<Text>().text = GameManager.player2;
+            transform.GetChild(1).GetComponent<Text>().text = GameManager.player1;
     }
-	
-	void Update () {
-		
-	}
 
     public void Replay()
     {

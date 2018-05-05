@@ -8,10 +8,6 @@ public class MainMenu : MonoBehaviour {
 	void Start () {
         GameManager.trigger = 0;
 	}
-	
-	void Update () {
-		
-	}
 
     public void ChangePlayerOne()
     {
@@ -32,6 +28,4 @@ public class MainMenu : MonoBehaviour {
     {
         GameManager.Exit();
     }
-
-    
 }
